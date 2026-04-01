@@ -67,83 +67,69 @@ export default function Hero() {
         padding: '0 clamp(24px,5vw,64px) 80px',
       }}
     >
-      {/* Video bg — zoom-out cinématique */}
-      <motion.div
-        initial={{ scale: 1.12 }}
-        animate={{ scale: 1 }}
-        transition={{ duration: 2.4, ease: [0.22, 1, 0.36, 1] }}
-        style={{ position: 'absolute', inset: 0, zIndex: 0, y: videoY }}
+      {/* Video bg — direct, sans transform parent pour iOS autoplay */}
+      <video
+        ref={videoRef}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        style={{
+          position: 'absolute',
+          inset: 0,
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          pointerEvents: 'none',
+          zIndex: 0,
+        }}
       >
-        <video
-          ref={videoRef}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          style={{
-            position: 'absolute',
-            inset: 0,
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            pointerEvents: 'none',
-            zIndex: 0,
-          }}
-        >
-          <source src="/hero_oryxia.mp4" type="video/mp4" />
-        </video>
+        <source src="/hero_oryxia.mp4" type="video/mp4" />
+      </video>
 
-        {/* Fallback blobs (shown behind video) */}
+      {/* Fallback blobs */}
+      <div style={{ position: 'absolute', inset: 0, background: '#070708', zIndex: -1 }}>
         <div
+          className="animate-drift1"
           style={{
             position: 'absolute',
-            inset: 0,
-            background: '#070708',
-            zIndex: -1,
+            top: '10%',
+            left: '20%',
+            width: 600,
+            height: 600,
+            background: 'radial-gradient(circle, rgba(139,108,247,0.35) 0%, transparent 70%)',
+            filter: 'blur(80px)',
+            borderRadius: '50%',
           }}
-        >
-          <div
-            className="animate-drift1"
-            style={{
-              position: 'absolute',
-              top: '10%',
-              left: '20%',
-              width: 600,
-              height: 600,
-              background: 'radial-gradient(circle, rgba(139,108,247,0.35) 0%, transparent 70%)',
-              filter: 'blur(80px)',
-              borderRadius: '50%',
-            }}
-          />
-          <div
-            className="animate-drift2"
-            style={{
-              position: 'absolute',
-              top: '30%',
-              right: '10%',
-              width: 500,
-              height: 500,
-              background: 'radial-gradient(circle, rgba(196,90,245,0.25) 0%, transparent 70%)',
-              filter: 'blur(80px)',
-              borderRadius: '50%',
-            }}
-          />
-          <div
-            className="animate-drift3"
-            style={{
-              position: 'absolute',
-              bottom: '20%',
-              left: '40%',
-              width: 400,
-              height: 400,
-              background: 'radial-gradient(circle, rgba(240,86,106,0.2) 0%, transparent 70%)',
-              filter: 'blur(80px)',
-              borderRadius: '50%',
-            }}
-          />
-        </div>
-      </motion.div>
+        />
+        <div
+          className="animate-drift2"
+          style={{
+            position: 'absolute',
+            top: '30%',
+            right: '10%',
+            width: 500,
+            height: 500,
+            background: 'radial-gradient(circle, rgba(196,90,245,0.25) 0%, transparent 70%)',
+            filter: 'blur(80px)',
+            borderRadius: '50%',
+          }}
+        />
+        <div
+          className="animate-drift3"
+          style={{
+            position: 'absolute',
+            bottom: '20%',
+            left: '40%',
+            width: 400,
+            height: 400,
+            background: 'radial-gradient(circle, rgba(240,86,106,0.2) 0%, transparent 70%)',
+            filter: 'blur(80px)',
+            borderRadius: '50%',
+          }}
+        />
+      </div>
 
       {/* Vignette */}
       <div
