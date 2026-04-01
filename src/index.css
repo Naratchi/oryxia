@@ -107,16 +107,12 @@ body {
 }
 
 /* Hide native video controls on all browsers */
-video::-webkit-media-controls,
-video::-webkit-media-controls-panel,
-video::-webkit-media-controls-play-button,
-video::-webkit-media-controls-start-playback-button,
-video::-webkit-media-controls-overlay-play-button {
+video::-webkit-media-controls-start-playback-button {
   display: none !important;
-  opacity: 0 !important;
-  visibility: hidden !important;
-  pointer-events: none !important;
-  -webkit-appearance: none !important;
+  -webkit-appearance: none;
+}
+video::-webkit-media-controls {
+  display: none !important;
 }
 
 /* ── Responsive overrides ── */

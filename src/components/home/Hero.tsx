@@ -18,21 +18,27 @@ export default function Hero() {
     if (!video) return
 
     video.muted = true
+    video.defaultMuted = true
     video.playsInline = true
-    video.setAttribute('playsinline', '')
-    video.setAttribute('webkit-playsinline', '')
 
-    const tryPlay = () => {
+    const playVideo = () => {
       video.play().catch(() => {})
     }
 
-    tryPlay()
-    document.addEventListener('touchstart', tryPlay, { once: true })
-    document.addEventListener('click', tryPlay, { once: true })
+    playVideo()
+
+    document.addEventListener('touchstart', playVideo, { once: true })
+    document.addEventListener('touchend', playVideo, { once: true })
+    document.addEventListener('click', playVideo, { once: true })
+
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) playVideo()
+    })
 
     return () => {
-      document.removeEventListener('touchstart', tryPlay)
-      document.removeEventListener('click', tryPlay)
+      document.removeEventListener('touchstart', playVideo)
+      document.removeEventListener('touchend', playVideo)
+      document.removeEventListener('click', playVideo)
     }
   }, [])
 
@@ -70,7 +76,6 @@ export default function Hero() {
         loop
         playsInline
         preload="auto"
-        onTouchStart={() => videoRef.current?.play().catch(() => {})}
         style={{
           position: 'absolute',
           inset: 0,
@@ -81,6 +86,7 @@ export default function Hero() {
           zIndex: 0,
         }}
       >
+        <source src="/hero_oryxia.webm" type="video/webm" />
         <source src="/hero_oryxia.mp4" type="video/mp4" />
       </video>
 
