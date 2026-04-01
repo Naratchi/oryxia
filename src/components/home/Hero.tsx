@@ -26,32 +26,18 @@ export default function Hero() {
     video.playsInline = true
     video.setAttribute('playsinline', '')
     video.setAttribute('webkit-playsinline', '')
-    video.setAttribute('x-webkit-airplay', 'deny')
 
-    let retryTimer: ReturnType<typeof setInterval>
+    const tryPlay = () => { video.play().catch(() => {}) }
 
-    const tryPlay = () => {
-      video.play().then(() => {
-        clearInterval(retryTimer)
-      }).catch(() => {})
-    }
-
-    // Retry every 300ms until the video plays (max 6s)
     tryPlay()
-    retryTimer = setInterval(tryPlay, 300)
-    setTimeout(() => clearInterval(retryTimer), 6000)
-
     video.addEventListener('canplay', tryPlay, { once: true })
-    video.addEventListener('loadeddata', tryPlay, { once: true })
 
     const handleTouch = () => { tryPlay() }
     document.addEventListener('touchstart', handleTouch, { once: true })
 
     return () => {
-      clearInterval(retryTimer)
       document.removeEventListener('touchstart', handleTouch)
       video.removeEventListener('canplay', tryPlay)
-      video.removeEventListener('loadeddata', tryPlay)
     }
   }, [])
 
@@ -95,7 +81,6 @@ export default function Hero() {
           loop
           playsInline
           preload="auto"
-          disablePictureInPicture
           style={{ width: '100%', height: '100%', objectFit: 'cover', pointerEvents: 'none' }}
         >
           <source src="/hero.webm" type="video/webm" />
