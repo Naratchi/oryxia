@@ -52,7 +52,7 @@ export default function Hero() {
         overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'flex-end',
+        justifyContent: 'center',
         padding: '0 clamp(24px,5vw,64px) 80px',
       }}
     >
@@ -155,17 +155,17 @@ export default function Hero() {
 
       {/* Content */}
       <div
-        className="hero-content-grid"
+        className="hero-content-grid hero-grid"
         style={{
           position: 'relative',
           zIndex: 2,
           maxWidth: 1160,
-          margin: '0 auto',
+          margin: '120px auto 0',
           width: '100%',
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
           gap: 48,
-          alignItems: 'flex-end',
+          alignItems: 'center',
         }}
       >
         {/* Left */}
@@ -198,7 +198,7 @@ export default function Hero() {
             style={{
               fontFamily: 'Inter',
               fontWeight: 800,
-              fontSize: 'clamp(36px, 4.8vw, 72px)',
+              fontSize: 'clamp(42px, 5.5vw, 82px)',
               lineHeight: 1.08,
               letterSpacing: '-0.04em',
               color: '#fff',

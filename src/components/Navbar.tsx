@@ -52,14 +52,16 @@ export default function Navbar() {
   return (
     <>
       <motion.nav
+        initial={{ opacity: 0 }}
         animate={{
+          opacity: 1,
           backgroundColor: scrolled ? 'rgba(7,7,8,0.92)' : 'rgba(0,0,0,0)',
           backdropFilter: scrolled ? 'blur(20px)' : 'blur(0px)',
           paddingTop: scrolled ? 18 : 28,
           paddingBottom: scrolled ? 18 : 28,
           borderBottomColor: scrolled ? 'rgba(255,255,255,0.07)' : 'rgba(255,255,255,0)',
         }}
-        transition={{ duration: 0.4, ease: 'easeOut' }}
+        transition={{ opacity: { delay: 2.0, duration: 0.4 }, default: { duration: 0.4, ease: 'easeOut' } }}
         style={{
           position: 'fixed',
           top: 0,

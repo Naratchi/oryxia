@@ -197,9 +197,6 @@ export default function Footer() {
         <span style={{ fontFamily: 'Inter', fontWeight: 300, fontSize: 12, color: 'rgba(255,255,255,0.22)' }}>
           © {year} Oryxia. Tous droits réservés.
         </span>
-        <span style={{ fontFamily: 'Inter', fontWeight: 300, fontSize: 12, color: 'rgba(255,255,255,0.22)' }}>
-          Conçu avec intention · Bruxelles
-        </span>
       </div>
     </footer>
   )

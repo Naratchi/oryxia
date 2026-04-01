@@ -1,6 +1,33 @@
 import { motion } from 'framer-motion'
 import { Search, Palette, Code2, Rocket } from 'lucide-react'
 
+const stepVariants = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.09 },
+  },
+}
+
+const lineVariant = {
+  hidden: { scaleX: 0 },
+  visible: { scaleX: 1, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } },
+}
+
+const numVariant = {
+  hidden: { opacity: 0, x: -24 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] } },
+}
+
+const titleVariant = {
+  hidden: { opacity: 0, y: 18 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] } },
+}
+
+const descVariant = {
+  hidden: { opacity: 0, y: 12 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] } },
+}
+
 const steps = [
   {
     num: '01',
@@ -101,29 +128,35 @@ export default function Process() {
         {steps.map((step, i) => (
           <motion.div
             key={step.num}
-            initial={{ opacity: 0, y: 32 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.72, delay: i * 0.08, ease: [0.4, 0, 0.2, 1] }}
-            viewport={{ once: true, margin: '-80px' }}
+            variants={stepVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-60px' }}
           >
+            {/* Animated border line */}
             <motion.div
+              variants={lineVariant}
               style={{
-                opacity: 0.65,
+                height: 1,
+                background: 'rgba(255,255,255,0.07)',
+                transformOrigin: 'left',
+              }}
+            />
+
+            <div
+              style={{
                 display: 'grid',
                 gridTemplateColumns: '72px 1.2fr 1fr',
                 gap: 48,
                 padding: '44px 0',
-                borderTop: '1px solid rgba(255,255,255,0.07)',
                 alignItems: 'start',
-                ...(i === steps.length - 1
-                  ? { borderBottom: '1px solid rgba(255,255,255,0.07)' }
-                  : {}),
+                ...(i === steps.length - 1 ? { borderBottom: '1px solid rgba(255,255,255,0.07)' } : {}),
               }}
-              whileHover={{ opacity: 1 }}
-              transition={{ duration: 0.22 }}
               className="process-step"
             >
-              <div
+              {/* Number */}
+              <motion.div
+                variants={numVariant}
                 className="grad-text process-step-num"
                 style={{
                   fontFamily: 'Inter',
@@ -135,20 +168,15 @@ export default function Process() {
                 }}
               >
                 {step.num}
-              </div>
+              </motion.div>
+
+              {/* Title + duration */}
               <div>
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 10,
-                    marginBottom: 8,
-                  }}
+                <motion.div
+                  variants={titleVariant}
+                  style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}
                 >
-                  <step.icon
-                    size={18}
-                    style={{ color: '#8b6cf7', flexShrink: 0 }}
-                  />
+                  <step.icon size={18} style={{ color: '#8b6cf7', flexShrink: 0 }} />
                   <div
                     className="process-step-title"
                     style={{
@@ -161,8 +189,9 @@ export default function Process() {
                   >
                     {step.title}
                   </div>
-                </div>
-                <div
+                </motion.div>
+                <motion.div
+                  variants={descVariant}
                   style={{
                     fontFamily: 'Inter',
                     fontSize: 11,
@@ -172,9 +201,12 @@ export default function Process() {
                   }}
                 >
                   {step.duration}
-                </div>
+                </motion.div>
               </div>
-              <p
+
+              {/* Description */}
+              <motion.p
+                variants={descVariant}
                 style={{
                   fontFamily: 'Inter',
                   fontWeight: 300,
@@ -185,8 +217,8 @@ export default function Process() {
                 }}
               >
                 {step.desc}
-              </p>
-            </motion.div>
+              </motion.p>
+            </div>
           </motion.div>
         ))}
       </div>

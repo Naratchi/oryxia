@@ -42,6 +42,7 @@ export default function Contact() {
         body: new URLSearchParams(formData as any).toString(),
       })
       setIsSubmitted(true)
+      window.scrollTo({ top: 0, behavior: 'smooth' })
     } catch (error) {
       alert('Erreur lors de l\'envoi. Réessayez.')
     } finally {

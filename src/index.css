@@ -202,6 +202,9 @@ body {
     padding-top: 100px !important;
     padding-bottom: 60px !important;
   }
+  .hero-grid {
+    margin-top: 0 !important;
+  }
   .hero-right {
     margin-left: 0 !important;
   }

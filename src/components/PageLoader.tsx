@@ -32,7 +32,7 @@ export default function PageLoader() {
             gap: 16,
           }}
         >
-          <div style={{ fontFamily: 'Gebuk, Inter, sans-serif', fontWeight: 'normal', fontSize: 32, color: '#fff' }}>
+          <div style={{ fontFamily: 'Gebuk, Inter, sans-serif', fontWeight: 'normal', fontSize: 32, color: '#fff', marginBottom: 8 }}>
             Oryxia
           </div>
           <div style={{ display: 'flex', gap: 8 }}>
