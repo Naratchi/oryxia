@@ -21,13 +21,26 @@ export default function Hero() {
   useEffect(() => {
     const video = videoRef.current
     if (!video) return
+
     video.muted = true
     video.playsInline = true
-    video.play().catch(() => {})
+    video.setAttribute('playsinline', '')
+    video.setAttribute('webkit-playsinline', '')
 
-    const handleTouch = () => { video.play().catch(() => {}) }
+    const tryPlay = () => { video.play().catch(() => {}) }
+
+    tryPlay()
+    video.addEventListener('canplay', tryPlay, { once: true })
+    video.addEventListener('loadeddata', tryPlay, { once: true })
+
+    const handleTouch = () => { tryPlay() }
     document.addEventListener('touchstart', handleTouch, { once: true })
-    return () => document.removeEventListener('touchstart', handleTouch)
+
+    return () => {
+      document.removeEventListener('touchstart', handleTouch)
+      video.removeEventListener('canplay', tryPlay)
+      video.removeEventListener('loadeddata', tryPlay)
+    }
   }, [])
 
   const lineVariants: Variants = {
@@ -70,6 +83,7 @@ export default function Hero() {
           loop
           playsInline
           preload="auto"
+          disablePictureInPicture
           style={{ width: '100%', height: '100%', objectFit: 'cover', pointerEvents: 'none' }}
         >
           <source src="/hero.webm" type="video/webm" />
