@@ -19,7 +19,8 @@ const perks = [
 
 export default function Contact() {
   const navigate = useNavigate()
-  const [submitted, setSubmitted] = useState(false)
+  const [isSubmitted, setIsSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [selectedTypes, setSelectedTypes] = useState<string[]>([])
   const [form, setForm] = useState({
     prenom: '', nom: '', societe: '', email: '', telephone: '', budget: '', message: '',
@@ -28,12 +29,27 @@ export default function Contact() {
   const toggleType = (t: string) =>
     setSelectedTypes((prev) => prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t])
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setSubmitted(true)
+    setLoading(true)
+
+    const formData = new FormData(e.target as HTMLFormElement)
+
+    try {
+      await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(formData as any).toString(),
+      })
+      setIsSubmitted(true)
+    } catch (error) {
+      alert('Erreur lors de l\'envoi. Réessayez.')
+    } finally {
+      setLoading(false)
+    }
   }
 
-  if (submitted) {
+  if (isSubmitted) {
     return (
       <div
         style={{
@@ -149,7 +165,7 @@ export default function Contact() {
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
               <Mail size={16} style={{ color: '#8b6cf7' }} />
               <span style={{ fontFamily: 'Inter', fontSize: 14, color: 'rgba(255,255,255,0.7)' }}>
-                hello@oryxia.be
+                contact@oryxia-agency.com
               </span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 48 }}>
@@ -186,8 +202,15 @@ export default function Contact() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
             onSubmit={handleSubmit}
+            name="contact"
+            method="POST"
+            data-netlify="true"
+            netlify-honeypot="bot-field"
             style={{ display: 'flex', flexDirection: 'column', gap: 32 }}
           >
+            <input type="hidden" name="form-name" value="contact" />
+            <input name="bot-field" style={{ display: 'none' }} />
+
             {/* Name grid */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
               {(['prenom', 'nom'] as const).map((field) => (
@@ -196,6 +219,7 @@ export default function Contact() {
                     {field === 'prenom' ? 'Prénom' : 'Nom'}
                   </label>
                   <input
+                    name={field}
                     value={form[field]}
                     onChange={(e) => setForm({ ...form, [field]: e.target.value })}
                     required
@@ -221,6 +245,7 @@ export default function Contact() {
                   {label}
                 </label>
                 <input
+                  name={key}
                   type={type}
                   value={form[key]}
                   onChange={(e) => setForm({ ...form, [key]: e.target.value })}
@@ -240,6 +265,7 @@ export default function Contact() {
               <label style={{ fontFamily: 'Inter', fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'rgba(255,255,255,0.36)', display: 'block', marginBottom: 14 }}>
                 Type de projet
               </label>
+              <input type="hidden" name="service" value={selectedTypes.join(', ')} />
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
                 {projectTypes.map((t) => (
                   <button
@@ -270,6 +296,7 @@ export default function Contact() {
                 Budget
               </label>
               <select
+                name="budget"
                 value={form.budget}
                 onChange={(e) => setForm({ ...form, budget: e.target.value })}
                 style={{
@@ -293,6 +320,7 @@ export default function Contact() {
                 Votre projet
               </label>
               <textarea
+                name="message"
                 value={form.message}
                 onChange={(e) => setForm({ ...form, message: e.target.value })}
                 rows={4}
@@ -309,8 +337,9 @@ export default function Contact() {
             <div>
               <motion.button
                 type="submit"
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
+                disabled={loading}
+                whileHover={{ scale: loading ? 1 : 1.03 }}
+                whileTap={{ scale: loading ? 1 : 0.97 }}
                 style={{
                   background: 'linear-gradient(135deg, #8b6cf7, #f0566a)',
                   border: 'none',
@@ -320,9 +349,10 @@ export default function Contact() {
                   textTransform: 'uppercase', letterSpacing: '0.06em',
                   color: '#fff',
                   marginBottom: 16,
+                  opacity: loading ? 0.7 : 1,
                 }}
               >
-                Envoyer ma demande →
+                {loading ? 'Envoi en cours…' : 'Envoyer ma demande →'}
               </motion.button>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 12 }}>

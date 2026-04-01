@@ -1,9 +1,24 @@
+import type React from 'react'
 import { useNavigate } from 'react-router-dom'
 
-const footerLinks = {
-  Offres: ['Sites Web', 'SEO & Google Ads', 'Visuels 3D IA'],
-  Agence: ['À propos', 'Nos projets', 'Notre process', 'Contact'],
-  Contact: ['hello@oryxia.be', 'Bruxelles, Belgique', 'Réponse sous 24h'],
+type FooterLink = { label: string; href?: string; navigate?: string; scroll?: string }
+
+const footerLinks: Record<string, FooterLink[]> = {
+  Offres: [
+    { label: 'Sites Web', navigate: '/', scroll: 'services' },
+    { label: 'SEO & Google Ads', navigate: '/', scroll: 'services' },
+    { label: 'Visuels 3D IA', navigate: '/', scroll: 'services' },
+  ],
+  Agence: [
+    { label: 'Nos projets', navigate: '/projets' },
+    { label: 'Notre process', navigate: '/', scroll: 'process' },
+    { label: 'Contact', navigate: '/contact' },
+  ],
+  Contact: [
+    { label: 'contact@oryxia-agency.com', href: 'mailto:contact@oryxia-agency.com' },
+    { label: 'Bruxelles, Belgique' },
+    { label: 'Réponse sous 24h' },
+  ],
 }
 
 export default function Footer() {
@@ -113,23 +128,55 @@ export default function Footer() {
               {title}
             </div>
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 10 }}>
-              {links.map((l) => (
-                <li key={l}>
-                  <span
-                    style={{
-                      fontFamily: 'Inter',
-                      fontWeight: 300,
-                      fontSize: 13,
-                      color: 'rgba(255,255,255,0.46)',
-                      transition: 'color 0.2s',
-                    }}
-                    onMouseEnter={(e) => (e.currentTarget.style.color = '#fff')}
-                    onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255,255,255,0.46)')}
-                  >
-                    {l}
-                  </span>
-                </li>
-              ))}
+              {links.map((l) => {
+                const isClickable = l.href || l.navigate
+                const baseStyle = {
+                  fontFamily: 'Inter',
+                  fontWeight: 300,
+                  fontSize: 13,
+                  color: 'rgba(255,255,255,0.46)',
+                  transition: 'color 0.2s',
+                  cursor: isClickable ? 'pointer' : 'default',
+                  textDecoration: 'none',
+                  display: 'block',
+                } as React.CSSProperties
+
+                const handleClick = () => {
+                  if (l.href) return // handled by <a>
+                  if (l.navigate) {
+                    navigate(l.navigate)
+                    if (l.scroll) {
+                      setTimeout(() => {
+                        document.getElementById(l.scroll!)?.scrollIntoView({ behavior: 'smooth' })
+                      }, 100)
+                    }
+                  }
+                }
+
+                return (
+                  <li key={l.label}>
+                    {l.href ? (
+                      <a
+                        href={l.href}
+                        style={baseStyle}
+                        onMouseEnter={(e) => (e.currentTarget.style.color = '#fff')}
+                        onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255,255,255,0.46)')}
+                      >
+                        {l.label}
+                      </a>
+                    ) : (
+                      <span
+                        style={baseStyle}
+                        onClick={isClickable ? handleClick : undefined}
+                        onMouseEnter={(e) => isClickable && (e.currentTarget.style.color = '#fff')}
+                        onMouseLeave={(e) => isClickable && (e.currentTarget.style.color = 'rgba(255,255,255,0.46)')}
+                      >
+                        {l.label}
+                      </span>
+                    )}
+                  </li>
+                )
+              })}
             </ul>
           </div>
         ))}

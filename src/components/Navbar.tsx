@@ -39,6 +39,16 @@ export default function Navbar() {
     }
   }
 
+  const handleLogoClick = () => {
+    setMenuOpen(false)
+    if (location.pathname === '/') {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    } else {
+      navigate('/')
+      setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 100)
+    }
+  }
+
   return (
     <>
       <motion.nav
@@ -66,7 +76,7 @@ export default function Navbar() {
       >
         {/* Logo */}
         <button
-          onClick={() => navigate('/')}
+          onClick={handleLogoClick}
           style={{
             background: 'none',
             border: 'none',
@@ -181,9 +191,12 @@ export default function Navbar() {
               }}
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 40 }}>
-                <span style={{ fontFamily: 'Gebuk, Inter, sans-serif', fontWeight: 'normal', fontSize: 20, color: '#fff' }}>
+                <button
+                  onClick={handleLogoClick}
+                  style={{ background: 'none', border: 'none', fontFamily: 'Gebuk, Inter, sans-serif', fontWeight: 'normal', fontSize: 20, color: '#fff' }}
+                >
                   Oryxia
-                </span>
+                </button>
                 <button
                   onClick={() => setMenuOpen(false)}
                   style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer', padding: 4 }}
