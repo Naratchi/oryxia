@@ -70,6 +70,7 @@ export default function Hero() {
         loop
         playsInline
         preload="auto"
+        onTouchStart={() => videoRef.current?.play().catch(() => {})}
         style={{
           position: 'absolute',
           inset: 0,
