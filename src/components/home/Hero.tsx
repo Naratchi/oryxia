@@ -81,6 +81,8 @@ export default function Hero() {
           loop
           playsInline
           preload="auto"
+          onCanPlay={(e) => { (e.target as HTMLVideoElement).play().catch(() => {}) }}
+          onLoadedData={(e) => { (e.target as HTMLVideoElement).play().catch(() => {}) }}
           style={{ width: '100%', height: '100%', objectFit: 'cover', pointerEvents: 'none' }}
         >
           <source src="/hero.webm" type="video/webm" />
