@@ -1,5 +1,5 @@
 import { useRef, useEffect } from 'react'
-import { motion, useScroll, useTransform, type Variants } from 'framer-motion'
+import { motion, type Variants } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 
 const stats = [
@@ -12,11 +12,6 @@ export default function Hero() {
   const videoRef = useRef<HTMLVideoElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const navigate = useNavigate()
-  const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches
-
-  const { scrollYProgress } = useScroll({ target: containerRef })
-  const videoYDesktop = useTransform(scrollYProgress, [0, 1], ['0px', '-80px'])
-  const videoY = isMobile ? '0px' : videoYDesktop
 
   useEffect(() => {
     const video = videoRef.current
