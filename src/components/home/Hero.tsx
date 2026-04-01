@@ -91,8 +91,7 @@ export default function Hero() {
             zIndex: 0,
           }}
         >
-          <source src="/hero.webm" type="video/webm" />
-          <source src="/hero.mp4" type="video/mp4" />
+          <source src="/hero_oryxia.mp4" type="video/mp4" />
         </video>
 
         {/* Fallback blobs (shown behind video) */}
