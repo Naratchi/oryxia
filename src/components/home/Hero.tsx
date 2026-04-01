@@ -27,17 +27,17 @@ export default function Hero() {
     video.setAttribute('playsinline', '')
     video.setAttribute('webkit-playsinline', '')
 
-    const tryPlay = () => { video.play().catch(() => {}) }
+    const tryPlay = () => {
+      video.play().catch(() => {})
+    }
 
     tryPlay()
-    video.addEventListener('canplay', tryPlay, { once: true })
-
-    const handleTouch = () => { tryPlay() }
-    document.addEventListener('touchstart', handleTouch, { once: true })
+    document.addEventListener('touchstart', tryPlay, { once: true })
+    document.addEventListener('click', tryPlay, { once: true })
 
     return () => {
-      document.removeEventListener('touchstart', handleTouch)
-      video.removeEventListener('canplay', tryPlay)
+      document.removeEventListener('touchstart', tryPlay)
+      document.removeEventListener('click', tryPlay)
     }
   }, [])
 
@@ -81,9 +81,15 @@ export default function Hero() {
           loop
           playsInline
           preload="auto"
-          onCanPlay={(e) => { (e.target as HTMLVideoElement).play().catch(() => {}) }}
-          onLoadedData={(e) => { (e.target as HTMLVideoElement).play().catch(() => {}) }}
-          style={{ width: '100%', height: '100%', objectFit: 'cover', pointerEvents: 'none' }}
+          style={{
+            position: 'absolute',
+            inset: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            pointerEvents: 'none',
+            zIndex: 0,
+          }}
         >
           <source src="/hero.webm" type="video/webm" />
           <source src="/hero.mp4" type="video/mp4" />
