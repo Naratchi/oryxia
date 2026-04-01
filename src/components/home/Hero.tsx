@@ -69,8 +69,8 @@ export default function Hero() {
     >
       {/* Video bg — zoom-out cinématique */}
       <motion.div
-        initial={{ scale: 1.12, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
+        initial={{ scale: 1.12 }}
+        animate={{ scale: 1 }}
         transition={{ duration: 2.4, ease: [0.22, 1, 0.36, 1] }}
         style={{ position: 'absolute', inset: 0, zIndex: 0, y: videoY }}
       >
